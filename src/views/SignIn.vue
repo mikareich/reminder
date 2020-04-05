@@ -53,8 +53,8 @@ import firebase from 'firebase'
 export default {
   data() {
     return {
-      email: 'mikareich0@gmail.com',
-      password: '!A9t13zy44gfd',
+      email: null,
+      password: null,
       passwordShown: false,
       isValid: false,
       firebaseError: false,
