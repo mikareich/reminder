@@ -5,21 +5,22 @@
     </v-avatar>
     <v-banner
       two-line
-      class="text-left"
+      class="text-left d-flex align-center"
       :style="{ 'color: red': firebaseError }"
     >
-      <v-avatar slot="icon" size="40" :color="firebaseError ? 'red' : 'orange'">
+      <v-avatar slot="icon" :color="firebaseError ? 'red' : 'orange'">
         <v-icon icon="error" color="white" v-if="firebaseError">
           error
         </v-icon>
         <v-icon icon="info" color="white" v-else>info</v-icon>
       </v-avatar>
-
-      {{
-        firebaseError
-          ? firebaseError
-          : 'Sign up so that you too can enjoy the benefits of Reminder and never forget anything again.'
-      }}
+      <p class="body-2 ma-auto">
+        {{
+          firebaseError
+            ? firebaseError
+            : 'Sign in so that you too can enjoy the benefits of Reminder and never forget anything again.'
+        }}
+      </p>
     </v-banner>
     <v-form class="mt-2" v-model="isValid">
       <v-text-field
@@ -49,7 +50,7 @@
       <v-btn color="primary" @click="signUp">Sign Up</v-btn>
     </v-form>
     <p class="overline mt-2">
-      You're already a user? Then <a href="/signIn">click here</a>to sign in.
+      You're already a user? Then <a href="/signIn">click here</a> to sign in.
     </p>
   </div>
 </template>
