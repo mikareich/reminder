@@ -88,7 +88,8 @@ export default {
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(({ user }) => {
             user.updateProfile({
-              displayName: this.name
+              displayName: this.name,
+              photoURL: `https://api.adorable.io/avatars/110/${this.name}`
             })
           })
           .catch(err => {

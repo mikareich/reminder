@@ -3,19 +3,19 @@
     <v-app-bar
       app
       elevate-on-scroll
-      color="primary"
+      color="white"
       v-show="$route.meta.requiresAuth"
     >
       <v-app-bar-nav-icon
-        color="secondary"
+        color="primary"
         @click="drawer = !drawer"
       ></v-app-bar-nav-icon>
-      <v-toolbar-title class="secondary--text font-weight-bold"
+      <v-toolbar-title class="primary--text font-weight-bold"
         >Reminder</v-toolbar-title
       >
       <v-spacer></v-spacer>
       <v-btn icon>
-        <v-icon color="secondary">add</v-icon>
+        <v-icon color="primary">add</v-icon>
       </v-btn>
     </v-app-bar>
 
@@ -23,7 +23,7 @@
       <v-list dense nav>
         <v-list-item>
           <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+            <v-img :src="user.photoURL"></v-img>
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -54,10 +54,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'App',
   data: () => ({
     drawer: false
-  })
+  }),
+  computed: mapState(['user']),
+  created() {
+    this.$store.dispatch('setCurrentUser')
+  }
 }
 </script>
