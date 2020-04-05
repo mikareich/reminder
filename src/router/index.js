@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'Reminder',
     component: Home,
     meta: {
       icon: 'home',
@@ -16,7 +16,7 @@ const routes = [
   },
   {
     path: '/new',
-    name: 'New Note',
+    name: 'New reminder',
     component: () => import('@/views/New.vue'),
     meta: {
       icon: 'edit',

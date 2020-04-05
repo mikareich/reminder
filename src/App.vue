@@ -10,16 +10,16 @@
         color="primary"
         @click="drawer = !drawer"
       ></v-app-bar-nav-icon>
-      <v-toolbar-title class="primary--text font-weight-bold"
-        >Reminder</v-toolbar-title
-      >
+      <v-toolbar-title class="primary--text font-weight-bold">{{
+        $route.name
+      }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon>
+      <v-btn icon v-show="$route.name == 'Reminder'" to="/new">
         <v-icon color="primary">add</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer v-model="drawer" fixed temporary>
       <v-list dense nav>
         <v-list-item>
           <v-list-item-avatar>
@@ -27,7 +27,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>Mika Reich</v-list-item-title>
+            <v-list-item-title>{{ user.displayName }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
