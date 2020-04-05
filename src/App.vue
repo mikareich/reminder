@@ -23,11 +23,15 @@
       <v-list dense nav>
         <v-list-item>
           <v-list-item-avatar>
-            <v-img :src="user.photoURL"></v-img>
+            <v-img
+              :src="user ? user.photoURL : '/img/icons/favicon-32x32.png'"
+            ></v-img>
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>{{ user.displayName }}</v-list-item-title>
+            <v-list-item-title>{{
+              user ? user.displayName : 'User undefined'
+            }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
