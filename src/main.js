@@ -30,5 +30,4 @@ firebase.auth().onAuthStateChanged(function() {
     vuetify,
     render: h => h(App)
   }).$mount('#app')
-  console.log(firebase.auth().currentUser)
 })
