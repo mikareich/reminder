@@ -92,7 +92,6 @@ export default {
   },
   methods: {
     submitReminder() {
-      console.log(this.user)
       this.$refs.form.validate()
       if (this.isValid) {
         const { uid } = this.user
