@@ -3,26 +3,11 @@
     <v-avatar size="130" color="red">
       <img src="/img/notebook.jpg" alt="Notebook" />
     </v-avatar>
-    <v-banner
-      two-line
-      class="text-left d-flex align-center"
-      :style="{ 'color: red': firebaseError }"
-    >
-      <v-avatar slot="icon" :color="firebaseError ? 'red' : 'orange'">
-        <v-icon icon="error" color="white" v-if="firebaseError">
-          error
-        </v-icon>
-        <v-icon icon="info" color="white" v-else>info</v-icon>
-      </v-avatar>
-      <p class="body-2 ma-auto">
-        {{
-          firebaseError
-            ? firebaseError
-            : 'Sign in so that you too can enjoy the benefits of Reminder and never forget anything again.'
-        }}
-      </p>
+    <v-banner two-line class="text-left overline">
+      Sign in so that you too can enjoy the benefits of Reminder and never
+      forget anything again.
     </v-banner>
-    <v-form class="mt-2" v-model="isValid">
+    <v-form class="mt-2" ref="form" v-model="isValid">
       <v-text-field
         prepend-inner-icon="face"
         filled
@@ -52,6 +37,12 @@
     <p class="overline mt-2">
       You're already a user? Then <a href="/signIn">click here</a> to sign in.
     </p>
+    <v-snackbar v-model="snackbar" :timeout="8000">
+      {{ snackbarText }}
+      <v-btn color="primary" text @click="snackbar = false">
+        Dismiss
+      </v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -66,6 +57,8 @@ export default {
       passwordShown: false,
       isValid: false,
       firebaseError: false,
+      snackbar: false,
+      snackbarText: null,
       rules: {
         email: v =>
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
@@ -82,6 +75,7 @@ export default {
   },
   methods: {
     signUp() {
+      this.$refs.form.validate()
       if (this.isValid) {
         firebase
           .auth()
@@ -93,7 +87,8 @@ export default {
             })
           })
           .catch(err => {
-            this.firebaseError = err.message
+            this.snackbarText = err.message
+            this.snackbar = true
           })
       }
     }

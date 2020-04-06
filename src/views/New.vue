@@ -69,6 +69,12 @@
         ></v-checkbox>
         <v-btn color="primary" @click="submitReminder">Create</v-btn>
       </v-form>
+      <v-snackbar v-model="snackbar" :timeout="8000">
+        {{ snackbarText }}
+        <v-btn color="primary" text @click="snackbar = false">
+          Close
+        </v-btn>
+      </v-snackbar>
     </div>
   </v-content>
 </template>
@@ -85,6 +91,8 @@ export default {
       datepickerShown: false,
       date: new Date().toISOString().substr(0, 10),
       specificDate: false,
+      snackbar: false,
+      snackbarText: null,
       rules: {
         required: v => !!v || 'This field is required'
       }
@@ -107,6 +115,8 @@ export default {
           .update(reminderData)
           .then(() => {
             this.$refs.form.reset()
+            this.snackbarText = 'New reminder set.'
+            this.snackbar = true
           })
       }
     }
