@@ -8,8 +8,13 @@ export default new Vuex.Store({
     user: null
   },
   mutations: {
-    SET_USER(state, { providerData }) {
-      state.user = providerData[0]
+    SET_USER(state, { uid, displayName, photoURL, email }) {
+      state.user = {
+        uid,
+        displayName,
+        photoURL,
+        email
+      }
     }
   },
   actions: {

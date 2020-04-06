@@ -14,8 +14,11 @@
         $route.name
       }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon v-show="$route.name == 'Reminder'" to="/new">
+      <v-btn icon v-if="$route.name == 'Reminder'" to="/new">
         <v-icon color="primary">add</v-icon>
+      </v-btn>
+      <v-btn icon v-else-if="$route.name == 'New reminder'" to="/">
+        <v-icon color="primary">close</v-icon>
       </v-btn>
     </v-app-bar>
 

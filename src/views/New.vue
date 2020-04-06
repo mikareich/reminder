@@ -5,7 +5,7 @@
         Create a memory to never forget anything again. Just enter the title,
         content and date and we will remind you.
       </v-banner>
-      <v-form v-model="isValid" class="mt-2">
+      <v-form v-model="isValid" class="mt-2" ref="form">
         <v-text-field
           label="Title"
           v-model="title"
@@ -14,6 +14,7 @@
           prepend-inner-icon="title"
           clear-icon="clear"
           clearable
+          :rules="[rules.required]"
         ></v-text-field>
         <v-textarea
           filled
@@ -23,11 +24,15 @@
           auto-grow
           prepend-inner-icon="text_fields"
           rows="1"
+          clear-icon="clear"
+          clearable
+          :rules="[rules.required]"
         ></v-textarea>
         <v-menu
+          ref="menu"
           v-model="datepickerShown"
           :close-on-content-click="false"
-          :nudge-right="40"
+          :return-value.sync="date"
           transition="scale-transition"
           offset-y
           min-width="290px"
@@ -40,20 +45,37 @@
               readonly
               filled
               v-on="on"
+              :disabled="!specificDate"
             ></v-text-field>
           </template>
           <v-date-picker
             v-model="date"
-            @input="datepickerShown = false"
-          ></v-date-picker>
+            no-title
+            scrollable
+            :min="new Date().toISOString().substr(0, 10)"
+          >
+            <v-btn text color="primary" @click="datepickerShown = false"
+              >Cancel</v-btn
+            >
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click="$refs.menu.save(date)"
+              >OK</v-btn
+            >
+          </v-date-picker>
         </v-menu>
-        <v-btn color="primary">Create</v-btn>
+        <v-checkbox
+          v-model="specificDate"
+          label="Bind to specific Date"
+        ></v-checkbox>
+        <v-btn color="primary" @click="submitReminder">Create</v-btn>
       </v-form>
     </div>
   </v-content>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import firebase from 'firebase'
 export default {
   data() {
     return {
@@ -62,9 +84,35 @@ export default {
       content: null,
       datepickerShown: false,
       date: new Date().toISOString().substr(0, 10),
-      rules: {}
+      specificDate: false,
+      rules: {
+        required: v => !!v || 'This field is required'
+      }
     }
-  }
+  },
+  methods: {
+    submitReminder() {
+      console.log(this.user)
+      this.$refs.form.validate()
+      if (this.isValid) {
+        const { uid } = this.user
+        const reminderKey = Math.floor(Math.random() * 1000000)
+        const reminderData = {
+          title: this.title,
+          content: this.content,
+          date: this.specificDate ? this.date : false
+        }
+        firebase
+          .database()
+          .ref(`users/${uid}/${reminderKey}/`)
+          .update(reminderData)
+          .then(() => {
+            this.$refs.form.reset()
+          })
+      }
+    }
+  },
+  computed: mapState(['user'])
 }
 </script>
 
